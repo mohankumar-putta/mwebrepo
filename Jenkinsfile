@@ -1,31 +1,27 @@
-pipeline {
+ pipeline{
     agent any
-	    environment {
+    environment {
         PATH = "/opt/maven/bin:$PATH"
     }
-    stages {
-        stage('CodeCheckout') {
-            steps {
-               git credentialsId: 'git_credentials', url: 'https://github.com/shashikanth-t/mwebrepo.git'
-               echo 'CodeCheckout executed.'
+    stages{
+        stage('code checkout') {
+          steps{
+            git credentialsId: 'git_credentials', url: 'https://github.com/mohankumar-putta/mwebrepo.git'
+            echo'code checkout completed successfully'
             }
-			}
-        stage('CodeBuild') {
-            steps {
-                sh 'mvn clean install'
-                echo 'CodeBuild executed.'
+        }
+        stage('code build') {
+          steps{
+            sh'mvn clean package'
+            echo'code build completed successfully'
             }
-			}
-        stage('CodeDeploy') {
-            steps {
-               
-        sshagent(['deploy_user']) {
-			sh "scp -o StrictHostKeyChecking=no webapp/target/webapp.war  ubuntu@3.21.206.193:/opt/apache-tomcat-9.0.64/webapps"
-			echo ""
-								}			
-            }
-			}
+        }
+        stage('code deploy') {
+          steps{
+            sshagent(['ssh_agent']) {
+            sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/pjob-2/webapp/target/webapp.war ec2-user@18.234.218.27:/opt/apache-tomcat-9.0.75/webapps'
+             }
+          }
         }
     }
-	
-	
+}
