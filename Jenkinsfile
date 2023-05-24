@@ -19,7 +19,7 @@
         stage('code deploy') {
           steps{
             sshagent(['ssh_agent']) {
-            sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/pjob-2/webapp/target/webapp.war ec2-user@54.226.20.81/:/opt/apache-tomcat-9.0.75/webapps'
+            sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/pjob-2/webapp/target/webapp.war ec2-user@54.226.20.81:/opt/apache-tomcat-9.0.75/webapps'
              }
           }
         }
