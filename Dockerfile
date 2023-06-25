@@ -1,4 +1,7 @@
-FROM ubuntu
-RUN yum -y install httpd
-RUN echo hoge > /var/www/html/index.html
-CMD ["/usr/sbin/httpd","-D","FOREGROUND"]
+FROM ubuntu:16.04
+RUN apt-get update
+RUN apt-get -y install apache2
+RUN apt-get install -y git
+RUN cd /var/www/html && \
+            
+ENTRYPOINT apachectl -D FOREGROUND
