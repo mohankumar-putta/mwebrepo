@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: replicationcontroller
+metadata:
+  labels:
+    name: mwebrepo
+  name:mwebrepo-controller
+spec:
+  replicas: 1
+  template:
+    metadat:
+      labels:
+        name: mwebrepo
+    spec:
+      containers:
+      - image: pmk536920/mwebrepo
+        name: mwebrepo
+        ports:
+        - name: mwebrepo
+          containerport:8080
+
+---
+# Node Port services
+
+apiVersion: v1
+kind: service
+metadata:
+  labels:
+    name:mwebrepo  
+  name: mwebrepot
+spec:
+  type:NodePort
+  ports:
+    - port:8280
+      targetport: 8280
+  selector:
+    name: mwebrepo
