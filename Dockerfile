@@ -1,9 +1,8 @@
-FROM openjdk:8-alpine
-RUN apk update && apk add /bin/sh
-RUN mkdir -p /opt/app
-ENV PROJECT_HOME /opt/app
-WORKDIR /home/ec2-user/var/lib/jenkins/workspace/project-1/webapp/target/
-RUN chmod -R 2755 webapp.war
-COPY webapp.war $PROJECT_HOME/webapp.war
-WORKDIR $PROJECT_HOME
-CMD ["java","-jar","/opt/app/webapp.war"]
+ FROM adoptopenjdk/openjdk11:alpine
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
+VOLUME /tmp
+ARG webapp.war
+ADD ${webapp.war} /app/app.jar
+EXPOSE 8080
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app/app.jar"]
