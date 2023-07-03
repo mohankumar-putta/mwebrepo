@@ -1,7 +1,8 @@
-FROM ubuntu:16.04
-RUN apt-get update
-RUN apt-get -y install apache2
-RUN apt-get install -y git
-RUN cd /var/www/html && \
-    git clone https://github.com/mohankumar-putta/mwebrepo.git
-ENTRYPOINT apachectl -D FOREGROUND
+FROM openjdk:8-alpine
+RUN apk update && apk add /bin/sh
+RUN mkdir -p /opt/app
+ENV PROJECT_HOME /opt/app
+WORKDIR /home/ec2-user/var/lib/jenkins/workspace/project-1/webapp/target/
+COPY webapp.war $PROJECT_HOME/webapp.war
+WORKDIR $PROJECT_HOME
+CMD ["java","-jar","/opt/app/webapp.war"]
